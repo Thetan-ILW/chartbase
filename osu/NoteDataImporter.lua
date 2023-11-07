@@ -52,6 +52,29 @@ function NoteDataImporter:getNote(time, noteType)
 	startNoteData.keysound = self.keysound
 	startNoteData.noteType = noteType
 
+	if self.inputType ~= "taiko" then
+		return startNoteData
+	end
+
+	startNoteData.finish = 0
+	startNoteData.isRed = false
+
+	if (self.sounds == nil) then
+		return startNoteData
+	end
+
+	for _, item in ipairs(self.sounds) do
+		local str = item[1]
+		
+		if str:find("hitfinish") then
+			startNoteData.finish = 1
+		end
+
+		if str:find("hitnormal") then
+			startNoteData.isRed = true
+		end
+	end
+
 	return startNoteData
 end
 

@@ -30,9 +30,9 @@ function NoteChartImporter:import()
 	if mode == 0 then
 		noteChart.inputMode.osu = 1
 	elseif mode == 1 then
-		noteChart.inputMode.taiko = 1
+		noteChart.inputMode.taiko = 2
 	elseif mode == 2 then
-		noteChart.inputMode.fruits = 1
+		noteChart.inputMode.fruits = 3
 	elseif mode == 3 then
 		noteChart.inputMode.key = math.floor(self.osu.keymode)
 	end
@@ -109,6 +109,11 @@ function NoteChartImporter:process()
 	self:processTimingPoints()
 
 	for _, noteParser in ipairs(self.noteDataImporters) do
+		if (self.osu.mode == 1) then
+			noteParser.inputIndex = 1
+			noteParser.inputType = "taiko"
+		end
+
 		self:addNoteDatas(noteParser:getNoteData())
 	end
 end
